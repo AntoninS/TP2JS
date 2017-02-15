@@ -11,6 +11,16 @@
 		</header>
 		<h2 id="clock"></h2>
 
-		<div id="txt"></div>
+		<div id="firstalarm">
+				<input type="checkbox" id="alarm"/>
+				<input type="number" min="0" max="23" id="hour"/>:<input type="number" min="0" max="59" id="minute"/>
+				<input type="text" id="description"/>
+				<select>
+						<option value="sound1">sound 1</option>
+						<option value="sound2">sound 2</option>
+				</select>
+				<button id="minus">-</button>
+		</div>
+
 	</body>
 </html>

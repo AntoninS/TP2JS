@@ -98,15 +98,18 @@ function addOneAlarm() {
 
     for(j = 0; j < checkboxes.length;j++){
       checkboxes[j].onchange = alarm;
+      minus[j].addEventListener('click', function(evt){
+        var alarmToDelete = evt.target.value;
+        try{
+        var divToDelete = document.getElementById("alarm"+alarmToDelete).outerHTML = "";
+        delete divToDelete;
+      }catch(err){}
+      });
     }
 }
 
 function deleteAlarm(alarm){
-  var alarmToDelete = alarm.value;
-  console.log("alarm"+alarmToDelete);
-  var divToDelete = document.getElementById("alarm"+alarmToDelete);
-  divToDelete.outerHTML = "";
-  delete divToDelete;
+
 }
 
 

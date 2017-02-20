@@ -59,7 +59,7 @@ function addOneAlarm() {
     div.appendChild(inputtext);
 
     var sound = document.createElement("select");
-    sound.id = "musicChoice";
+    sound.name = "musicChoice";
     div.appendChild(sound);
 
     var option1 = document.createElement("option");
@@ -98,16 +98,7 @@ function addOneAlarm() {
 
     for(j = 0; j < checkboxes.length;j++){
       checkboxes[j].onchange = alarm;
-  /*    minus[j].addEventListener("click",function(){
-        deleteAlarm(minus[j]);
-      }); */
     }
-
-
-
-
-
-
 }
 
 function deleteAlarm(alarm){
@@ -129,7 +120,7 @@ function alarm(){
     //song loading
     song1 = document.querySelector('#sound1');
     song2 = document.querySelector('#sound2');
-
+    choiceNumber = j;
     sameHour();
   }
 }
@@ -137,15 +128,16 @@ function alarm(){
 
 function sameHour(){
   if(alarmTime === seconds){
-    var choice = document.getElementById('musicChoice');
+     clearTimeout(al);
+     choice = musicChoices[choiceNumber];
     if(choice[choice.selectedIndex].value === "sound1"){
         song1.play();
     }else if (choice[choice.selectedIndex].value === "sound2") {
         song2.play();
     }
 
-    if(document.getElementById('description').value !== ""){
-      alert(document.getElementById('description').value);
+    if(descriptions[choiceNumber].value !== ""){
+      alert(descriptions[choiceNumber].value);
     }else{
       alert("Réveille-toi vite !");
     }
@@ -153,8 +145,7 @@ function sameHour(){
     song1.currentTime = 0;
     song2.pause();
     song2.currentTime = 0;
-    document.getElementById('active').checked = false;
-    clearTimeout(al);
+    checkboxes[choiceNumber].checked = false;
   }
   al = setTimeout(sameHour, 100);
 }

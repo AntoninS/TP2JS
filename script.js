@@ -54,7 +54,7 @@ function addOneAlarm() {
 
     var inputtext = document.createElement("input");
     inputtext.setAttribute("type","text");
-    inputtext.setAttribute("placeholder","Optionnel");
+    inputtext.setAttribute("placeholder","Description (optionnel)");
     inputtext.name = 'description';
     div.appendChild(inputtext);
 
@@ -90,11 +90,12 @@ function addOneAlarm() {
 
     //adding Listener on the checkbox
     checkboxes = document.getElementsByName("active");
+    minus = document.getElementsByName("minus");
     hours = document.getElementsByName("hour");
     minutes = document.getElementsByName("minute");
-    descriptions = document.getElementsByName("description");
     musicChoices = document.getElementsByName("musicChoice");
-    minus = document.getElementsByName("minus");
+    descriptions = document.getElementsByName("description");
+
 
     for(j = 0; j < checkboxes.length;j++){
       checkboxes[j].onchange = alarm;
@@ -105,50 +106,36 @@ function addOneAlarm() {
         delete divToDelete;
       }catch(err){}
       });
-    }
-}
-
-function deleteAlarm(alarm){
-
+    }   
 }
 
 
 function alarm(){
-  for(j = 0; j < checkboxes.length; j++){
-  if(checkboxes[j].checked === true){
-    var h = hours[j].value;
-    var m = minutes[j].value;
-    alarmTime = h * 3600 + m * 60;
-
     //song loading
     song1 = document.querySelector('#sound1');
     song2 = document.querySelector('#sound2');
-    choiceNumber = j;
-    sameHour();
+
+  for(j = 0; j < checkboxes.length; j++){
+  if(checkboxes[j].checked === true && (hours[j].value * 3600 + minutes[j].value * 60) === seconds){
+         choice = musicChoices[j];
+        if(choice[choice.selectedIndex].value === "sound1"){
+            song1.play();
+        }else if (choice[choice.selectedIndex].value === "sound2") {
+            song2.play();
+        }
+
+        if(descriptions[j].value !== ""){
+          alert(descriptions[j].value);
+        }else{
+          alert("Réveille-toi vite !");
+        }
+        song1.pause();
+        song1.currentTime = 0;
+        song2.pause();
+        song2.currentTime = 0;
+        checkboxes[j].checked = false;
+      }
   }
-}
+  setTimeout(alarm, 100);
 }
 
-function sameHour(){
-  if(alarmTime === seconds){
-     clearTimeout(al);
-     choice = musicChoices[choiceNumber];
-    if(choice[choice.selectedIndex].value === "sound1"){
-        song1.play();
-    }else if (choice[choice.selectedIndex].value === "sound2") {
-        song2.play();
-    }
-
-    if(descriptions[choiceNumber].value !== ""){
-      alert(descriptions[choiceNumber].value);
-    }else{
-      alert("Réveille-toi vite !");
-    }
-    song1.pause();
-    song1.currentTime = 0;
-    song2.pause();
-    song2.currentTime = 0;
-    checkboxes[choiceNumber].checked = false;
-  }
-  al = setTimeout(sameHour, 100);
-}

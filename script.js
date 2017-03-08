@@ -10,7 +10,7 @@ function startTime() {
     var h = today.getHours();
     var m = today.getMinutes();
     var s = today.getSeconds();
-    seconds = h * 3600 + m * 60 + s;
+    secondsActualTime = h * 3600 + m * 60 + s;
     m = checkTime(m);
     s = checkTime(s);
     document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
@@ -54,7 +54,7 @@ function addOneAlarm() {
 
     var inputtext = document.createElement("input");
     inputtext.setAttribute("type","text");
-    inputtext.setAttribute("placeholder","Description (optionnel)");
+    inputtext.setAttribute("placeholder","Description (optional)");
     inputtext.name = 'description';
     div.appendChild(inputtext);
 
@@ -106,36 +106,42 @@ function addOneAlarm() {
         delete divToDelete;
       }catch(err){}
       });
-    }   
+    }
 }
 
 
 function alarm(){
     //song loading
-    song1 = document.querySelector('#sound1');
-    song2 = document.querySelector('#sound2');
+    var song1 = document.querySelector('#sound1');
+    var song2 = document.querySelector('#sound2');
 
   for(j = 0; j < checkboxes.length; j++){
-  if(checkboxes[j].checked === true && (hours[j].value * 3600 + minutes[j].value * 60) === seconds){
-         choice = musicChoices[j];
-        if(choice[choice.selectedIndex].value === "sound1"){
-            song1.play();
-        }else if (choice[choice.selectedIndex].value === "sound2") {
-            song2.play();
-        }
+  if(checkboxes[j].checked === true){
+    if(hours[j].value !== "" && minutes[j].value !== ""){
+      if ((hours[j].value * 3600 + minutes[j].value * 60) === secondsActualTime){
+           choice = musicChoices[j];
+          if(choice[choice.selectedIndex].value === "sound1"){
+              song1.play();
+          }else if (choice[choice.selectedIndex].value === "sound2") {
+              song2.play();
+          }
 
-        if(descriptions[j].value !== ""){
-          alert(descriptions[j].value);
-        }else{
-          alert("Réveille-toi vite !");
+          if(descriptions[j].value !== ""){
+            alert(descriptions[j].value);
+          }else{
+            alert("Réveille-toi vite !");
+          }
+          song1.pause();
+          song1.currentTime = 0;
+          song2.pause();
+          song2.currentTime = 0;
+          checkboxes[j].checked = false;
         }
-        song1.pause();
-        song1.currentTime = 0;
-        song2.pause();
-        song2.currentTime = 0;
-        checkboxes[j].checked = false;
-      }
+  }else{
+    alert("Please fill-in the hours and the minutes");
+    checkboxes[j].checked = false;
   }
+}
+}
   setTimeout(alarm, 100);
 }
-

@@ -98,6 +98,17 @@ function addOneAlarm() {
 
 
     for(j = 0; j < checkboxes.length;j++){
+      /*
+      hours[j].addEventListener("input", function(evt){
+        console.log(evt.target.value);
+          if(evt.target.value < 10){
+            console.log("if");
+            evt.target.innerHTML = checkTime(evt.target.value);
+          }
+
+      });
+      */
+
       checkboxes[j].onchange = alarm;
       minus[j].addEventListener('click', function(evt){
         var alarmToDelete = evt.target.value;
@@ -118,25 +129,34 @@ function alarm(){
   for(j = 0; j < checkboxes.length; j++){
   if(checkboxes[j].checked === true){
     if(hours[j].value !== "" && minutes[j].value !== ""){
-      if ((hours[j].value * 3600 + minutes[j].value * 60) === secondsActualTime){
-           choice = musicChoices[j];
-          if(choice[choice.selectedIndex].value === "sound1"){
-              song1.play();
-          }else if (choice[choice.selectedIndex].value === "sound2") {
-              song2.play();
-          }
+      if((hours[j].value > 0 && minutes[j].value > 0) && (hours[j].value < 24 && minutes[j].value < 60)){
+        if ((hours[j].value * 3600 + minutes[j].value * 60) === secondsActualTime){
+             choice = musicChoices[j];
+            if(choice[choice.selectedIndex].value === "sound1"){
+                song1.play();
+            }else if (choice[choice.selectedIndex].value === "sound2") {
+                song2.play();
+            }
 
-          if(descriptions[j].value !== ""){
-            alert(descriptions[j].value);
-          }else{
-            alert("Réveille-toi vite !");
+            if(descriptions[j].value !== ""){
+              alert(descriptions[j].value);
+            }else{
+              alert("Réveille-toi vite !");
+            }
+            song1.pause();
+            song1.currentTime = 0;
+            song2.pause();
+            song2.currentTime = 0;
+            checkboxes[j].checked = false;
           }
-          song1.pause();
-          song1.currentTime = 0;
-          song2.pause();
-          song2.currentTime = 0;
-          checkboxes[j].checked = false;
-        }
+      }
+      else{
+        alert("Please enter correct values (>0 and hours<24 and minutes<60)");
+        checkboxes[j].checked = false;
+        hours[j].value = "";
+        minutes[j].value = "";
+      }
+
   }else{
     alert("Please fill-in the hours and the minutes");
     checkboxes[j].checked = false;
